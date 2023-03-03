@@ -1,5 +1,3 @@
-// import '@/styles/globals.css'
-
 import NavbarComponent from '@/components/Navbar'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { useRouter } from 'next/router'
