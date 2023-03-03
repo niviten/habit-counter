@@ -16,4 +16,16 @@ function select(...args) {
   })
 }
 
-module.exports = { select }
+function insert(...args) {
+  return new Promise((resolve, reject) => {
+    db.run(...args, function (err) {
+      if (err) {
+        reject(err)
+        return
+      }
+      resolve(this.lastID)
+    })
+  })
+}
+
+module.exports = { select, insert }
