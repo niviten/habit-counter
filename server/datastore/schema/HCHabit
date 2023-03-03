@@ -1,0 +1,11 @@
+HCHabit
+    - HABIT_ID (primary key, auto generated)
+    - HABIT_NAME (unique, mandatory)
+    - HABIT_DESCRIPTION
+    - IS_TIME_BASED (mandatory, values = [0, 1], default = 0)
+
+HCHabitHistory
+    - HABIT_HISTORY_ID (primary key, auto generated)
+    - HABIT_ID : HCHabit.HABIT_ID (foreign key)
+    - HISTORY_TIMESTAMP (mandatory)
+    - PERFORMED_TIME (optional - based on HCHabit.IS_TIME_BASED == 1)
