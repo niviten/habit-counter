@@ -1,5 +1,5 @@
 const path = require('path')
-const { select } = require(path.join(__dirname, '..', 'helpers', 'database'))
+const { select, insert } = require(path.join(__dirname, '..', 'helpers', 'database'))
 
 async function getHabits(req, res) {
   const query = 'SELECT HABIT_ID, HABIT_NAME, IS_TIME_BASED from HCHabit ORDER BY HABIT_ID'
@@ -38,7 +38,7 @@ async function getHabitByID(req, res) {
 }
 
 async function addHabit(req, res) {
-  const { habitName, habitDescription, isTimeBased } = req.body
+  let { habitName, habitDescription, isTimeBased } = req.body
 
   if (!habitName) {
     res.status(400).send({
@@ -47,7 +47,8 @@ async function addHabit(req, res) {
     return
   }
 
-  if (!isNewHabitName(habitName)) {
+  const isNewHabit = await isNewHabitName(habitName)
+  if (!isNewHabit) {
     res.status(400).send({
       errorMessage: 'Habit Name Already Present'
     })
@@ -57,11 +58,14 @@ async function addHabit(req, res) {
   if (!habitDescription) { habitDescription = '' }
   isTimeBased = isTimeBased ? 1 : 0
 
-  // try {
-  //   const query = 'INSERT INTO HCHabit (HABIT_NAME, HABIT_DESCRIPTION, IS_TIME_BASED) VALUES (?, ?, ?)'
-  //   const params = [ habitName, habitDescription, isTimeBased ]
-
-  // }
+  try {
+    const query = 'INSERT INTO HCHabit (HABIT_NAME, HABIT_DESCRIPTION, IS_TIME_BASED) VALUES (?, ?, ?)'
+    const params = [ habitName, habitDescription, isTimeBased ]
+    const habitID = await insert(query, params)
+    res.status(200).send({ habitID, message: 'Successfully Inserted' })
+  } catch (err) {
+    res.status(500).send({ err })
+  }
 }
 
 
@@ -80,4 +84,4 @@ async function isNewHabitName(habitName) {
 }
 
 
-module.exports = { getHabits, getHabitByID }
+module.exports = { getHabits, getHabitByID, addHabit }
