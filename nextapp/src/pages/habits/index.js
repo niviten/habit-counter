@@ -5,7 +5,7 @@ import { Button, Form, Modal, Table } from 'react-bootstrap'
 export default function Habits() {
   const [ loading, setLoading ] = useState(true)
   const [ showAddHabitModal, setShowAddHabitModal ] = useState(false)
-  const [ newHabit, setNewHabit ] = useState(null)
+  const [ newHabit, setNewHabit ] = useState({ habitName: '', habitDescription: '', isTimeBased: false })
   const [ habits, setHabits ] = useState([])
 
   
@@ -24,8 +24,22 @@ export default function Habits() {
   }, [])
 
 
-  function handleChangeNewHabit(event) {
-    setNewHabit(event.target.value)
+  function handleChangeNewHabitName(event) {
+    setNewHabit(previousValue => {
+      return {
+        ...previousValue,
+        habitName: event.target.value
+      }
+    })
+  }
+
+  function handleChangeNewHabitDescription(event) {
+    setNewHabit(previousValue => {
+      return {
+        ...previousValue,
+        habitDescription: event.target.value
+      }
+    })
   }
   
   function addNewHabit() {
@@ -88,11 +102,14 @@ export default function Habits() {
       <Modal.Body>
         <Form>
           <Form.Group className='mb-3' controlId='newHabitForm.ControlInput1'>
-            <Form.Control type='text' placeholder='Habit Name...' />
+            <Form.Control type='text' placeholder='Habit Name...' onChange={handleChangeNewHabitName}/>
           </Form.Group>
           <Form.Group className='mb-3' controlId='newHabitForm.ControlTextArea1'>
-            <Form.Control as='textarea' rows={5} placeholder="Habit Description..." />
+            <Form.Control as='textarea' rows={5} placeholder="Habit Description..." onChange={handleChangeNewHabitDescription}/>
           </Form.Group>
+          <div className='mb-2'>
+            <Form.Check type='checkbox' label='Is Time Based' onChange={handleChangeNewHabitIsTimeBased} />
+          </div>
         </Form>
       </Modal.Body>
       <Modal.Footer>
