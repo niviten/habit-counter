@@ -52,10 +52,11 @@ export default function Habits() {
   }
   
   function addNewHabit() {
-    handleAddNewHabitModelClose()
+    // close modal only after 
+    handleAddNewHabitModalClose()
   }
 
-  function handleAddNewHabitModelClose() {
+  function handleAddNewHabitModalClose() {
     if (showAddHabitModal) {
       setShowAddHabitModal(false)
     }
@@ -112,7 +113,7 @@ export default function Habits() {
     <Modal
       size='lg'
       show={showAddHabitModal}
-      onHide={() => handleAddNewHabitModelClose()}
+      onHide={() => handleAddNewHabitModalClose()}
       centered
     >
       <Modal.Header closeButton>
@@ -132,7 +133,7 @@ export default function Habits() {
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant='dark' onClick={() => handleAddNewHabitModelClose()}>Close</Button>
+        <Button variant='dark' onClick={() => handleAddNewHabitModalClose()}>Close</Button>
         <Button variant='dark' onClick={() => addNewHabit()}>Add</Button>
       </Modal.Footer>
     </Modal>
