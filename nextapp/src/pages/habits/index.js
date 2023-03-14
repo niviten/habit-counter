@@ -41,10 +41,29 @@ export default function Habits() {
       }
     })
   }
+
+  function handleChangeNewHabitIsTimeBased(event) {
+    setNewHabit(previousValue => {
+      return {
+        ...previousValue,
+        isTimeBased: event.target.checked
+      }
+    })
+  }
   
   function addNewHabit() {
-    console.log(newHabit)
-    setShowAddHabitModal(false)
+    handleAddNewHabitModelClose()
+  }
+
+  function handleAddNewHabitModelClose() {
+    if (showAddHabitModal) {
+      setShowAddHabitModal(false)
+    }
+    setNewHabit({
+      habitName: '',
+      habitDescription: '',
+      isTimeBased: false
+    })
   }
 
 
@@ -93,7 +112,7 @@ export default function Habits() {
     <Modal
       size='lg'
       show={showAddHabitModal}
-      onHide={() => setShowAddHabitModal(false)}
+      onHide={() => handleAddNewHabitModelClose()}
       centered
     >
       <Modal.Header closeButton>
@@ -113,7 +132,7 @@ export default function Habits() {
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant='dark' onClick={() => setShowAddHabitModal(false)}>Close</Button>
+        <Button variant='dark' onClick={() => handleAddNewHabitModelClose()}>Close</Button>
         <Button variant='dark' onClick={() => addNewHabit()}>Add</Button>
       </Modal.Footer>
     </Modal>
