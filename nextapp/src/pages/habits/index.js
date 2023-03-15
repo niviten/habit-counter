@@ -1,11 +1,11 @@
+import AddHabitModal from '@/components/modals/AddHabitModal'
 import fetchData from '@/helpers/fetchData'
 import { useEffect, useState } from 'react'
-import { Button, Form, Modal, Table } from 'react-bootstrap'
+import { Button, Table } from 'react-bootstrap'
 
 export default function Habits() {
   const [ loading, setLoading ] = useState(true)
   const [ showAddHabitModal, setShowAddHabitModal ] = useState(false)
-  const [ newHabit, setNewHabit ] = useState({ habitName: '', habitDescription: '', isTimeBased: false })
   const [ habits, setHabits ] = useState([])
 
   
@@ -22,50 +22,6 @@ export default function Habits() {
     setLoading(true)
     getData()
   }, [])
-
-
-  function handleChangeNewHabitName(event) {
-    setNewHabit(previousValue => {
-      return {
-        ...previousValue,
-        habitName: event.target.value
-      }
-    })
-  }
-
-  function handleChangeNewHabitDescription(event) {
-    setNewHabit(previousValue => {
-      return {
-        ...previousValue,
-        habitDescription: event.target.value
-      }
-    })
-  }
-
-  function handleChangeNewHabitIsTimeBased(event) {
-    setNewHabit(previousValue => {
-      return {
-        ...previousValue,
-        isTimeBased: event.target.checked
-      }
-    })
-  }
-  
-  function addNewHabit() {
-    // close modal only after 
-    handleAddNewHabitModalClose()
-  }
-
-  function handleAddNewHabitModalClose() {
-    if (showAddHabitModal) {
-      setShowAddHabitModal(false)
-    }
-    setNewHabit({
-      habitName: '',
-      habitDescription: '',
-      isTimeBased: false
-    })
-  }
 
 
   return <>
@@ -110,32 +66,6 @@ export default function Habits() {
       </Table>
     }
 
-    <Modal
-      size='lg'
-      show={showAddHabitModal}
-      onHide={() => handleAddNewHabitModalClose()}
-      centered
-    >
-      <Modal.Header closeButton>
-        <Modal.Title>Add Habit</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <Form>
-          <Form.Group className='mb-3' controlId='newHabitForm.ControlInput1'>
-            <Form.Control type='text' placeholder='Habit Name...' onChange={handleChangeNewHabitName}/>
-          </Form.Group>
-          <Form.Group className='mb-3' controlId='newHabitForm.ControlTextArea1'>
-            <Form.Control as='textarea' rows={5} placeholder="Habit Description..." onChange={handleChangeNewHabitDescription}/>
-          </Form.Group>
-          <div className='mb-2'>
-            <Form.Check type='checkbox' label='Is Time Based' onChange={handleChangeNewHabitIsTimeBased} />
-          </div>
-        </Form>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant='dark' onClick={() => handleAddNewHabitModalClose()}>Close</Button>
-        <Button variant='dark' onClick={() => addNewHabit()}>Add</Button>
-      </Modal.Footer>
-    </Modal>
+    <AddHabitModal showModal={showAddHabitModal} handleHideModal={() => setShowAddHabitModal(false)}/>
   </>
 }
